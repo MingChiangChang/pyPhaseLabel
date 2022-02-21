@@ -1,0 +1,32 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+from pyPhaseLabel import PhaseModel, CrystalPhase, EQ, BackgroundModel
+from pyPhaseLabel import create_phases, evaluate_obj, optimize_phase, Lorentz 
+
+with open('sticks.csv', 'r') as f:
+    t = f.read()
+
+phases = create_phases(t, 0.1, Lorentz())
+
+x = np.linspace(6, 55, 1024)
+y = np.zeros(1024)
+new_phase = CrystalPhase(phases[1], [4.5, 1.0, 0.15])
+t = evaluate_obj(phases[1], x) 
+
+
+test_data = (evaluate_obj(new_phase, x) 
+             + 0.2*np.sin(x/10) 
+             + 0.1*np.random.randn(1024)+0.2)
+bg = BackgroundModel(x, EQ(), 5)
+p = PhaseModel(phases[1], bg)
+pm = optimize_phase(p, x, test_data, maxiter=512)
+plt.plot(x, t, label="Original Phase")
+plt.plot(x, test_data, label="Test data")
+plt.plot(x, evaluate_obj(pm, x), label="Optimized result", linewidth=3)
+plt.plot(x, evaluate_obj(pm.background, x), label="Fitted background")
+plt.legend()
+plt.xlabel("q ($nm^{-1}$)")
+plt.ylabel("(a.u.)")
+plt.show()
+
