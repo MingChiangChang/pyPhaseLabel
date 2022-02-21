@@ -5,19 +5,22 @@
 2. Clone this repo by
 `git clone https://github.com/MingChiangChang/pyPhaseLabel`
 3. Then do
-`cd pyPhaseLabel
+```console
+cd pyPhaseLabel
 chmod 755 install.sh
-./install.sh`
+./install.sh
+```
 The only part that can go wrong is when installing pyJulia. This can give error when the julia is not installed in default location. In such case, edit the install.sh at line 12 to:
 `python -c 'import julia; julia.install(julia=$PATH_TO_JULIA_BINARY)'`
 
 ## Usage
 After installation, you should be able to use the package as following
-`
-python
+```console
+$ python
 >>> from pyPhaseLabel import evaluate_obj, optimize_phases, create_phases
 >>>
-` 
+```
+ 
 These are also the main functions that you would be interfacing with.
 ### Custom objects
 - `CrystalPhase` contains the lattice information and a list of peak indices and intensities that is required to simulate the x-ray diffraction pattern. The optimization will optimize the lattice parameters under the assumption that no symmetry is broken.
@@ -32,5 +35,7 @@ These are also the main functions that you would be interfacing with.
 
 ## Example
 This is the output of the `example.py`
+
 ![Example](example.png)
+
 As you can see from the figure, this code can fit the lattice distortion while fitting the background at once.
