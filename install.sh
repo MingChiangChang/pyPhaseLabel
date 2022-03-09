@@ -8,8 +8,13 @@ echo "$(dirname "$CUR_PATH")" > "$SITEDIR/somelib.pth"
 
 # Install pyJulia
 echo "Installing PyJulia..."
-python3 -m pip install --user julia
+cd ..
+git clone https://github.com/JuliaPy/pyjulia
+cd pyjulia
+pip install .
+cd ../pyPhaseLabel 
 python -c 'import julia; julia.install()'
+python3 -m julia.sysimage sys.so
 
 # Install Required packages
 echo "Install Required Packages.."

@@ -1,7 +1,16 @@
+import platform
+from pathlib import Path
 import numpy as np
+from julia import Julia
+
+_os = platform.system()
+dir_path = Path( __file__ ).parent
+
+if _os == "Linux" or _os == "Windows":
+    Julia(sysimage=str(dir_path / "sys.so"))
+
 from julia import Main 
 from pathlib import Path
-dir_path = Path( __file__ ).parent
 
 Main.include(str(dir_path / "python_mod.jl"))
 Main.include(str(dir_path / "startup.jl"))

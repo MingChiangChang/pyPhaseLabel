@@ -1,4 +1,6 @@
 import julia
+from julia import Julia
+Julia(sysimage="sys.so")
 
 from julia import Pkg
 
