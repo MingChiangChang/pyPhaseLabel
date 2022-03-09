@@ -2,6 +2,12 @@
 
 ## Installation (only tested for Macs)
 1. Install Julia
+Add julia to path by adding this line in `~/.bashrc` (for linux/mac)
+```console
+export PATH="$PATH:path/to/julia/folder/bin"
+```
+where `path/to/julia/folder` is where you put the extracted julia folder (likely `/usr/local/bin/julia-$version/`)
+
 2. Clone this repo by
 `git clone https://github.com/MingChiangChang/pyPhaseLabel`
 3. Then do
