@@ -1,6 +1,6 @@
 # A python wrapper of [CrystalShift.jl](https://github.com/MingChiangChang/CrystalShift.jl)
-
-## Installation (only tested for Macs)
+Currently only support Linux and Macs. Window installation is under testing.
+## Installation (tested for Linux and Macs)
 1. Install Julia
 Add julia to path by adding this line in `~/.bashrc` (for linux/mac)
 ```console
