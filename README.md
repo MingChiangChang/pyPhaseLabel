@@ -10,7 +10,7 @@ where `path/to/julia/folder` is where you put the extracted julia folder (likely
 
 2. Clone this repo by
 `git clone https://github.com/MingChiangChang/pyPhaseLabel`
-3. Then do
+3. Then do (WITH YOUR PYTHON ENVIRONMENT ACTIVATED)
 ```console
 cd pyPhaseLabel
 chmod 755 install.sh
@@ -25,7 +25,7 @@ python -c 'import julia; julia.install(julia=$PATH_TO_JULIA_BINARY)'
 After installation, you should be able to use the package as following
 ```console
 $ python
->>> from pyPhaseLabel import evaluate_obj, optimize_phases, create_phases
+>>> from pyPhaseLabel import evaluate_obj, optimize_phase, create_phases
 >>>
 ```
 ### Generate input files
