@@ -16,8 +16,10 @@ cd pyPhaseLabel
 chmod 755 install.sh
 ./install.sh
 ```
-The only part that can go wrong is when installing pyJulia. This can give error when the julia is not installed in default location. In such case, edit the install.sh at line 12 to:
-`python -c 'import julia; julia.install(julia=$PATH_TO_JULIA_BINARY)'`
+The only part that can go wrong is when installing pyJulia. This can give error when the julia is not installed in default location. In such case, edit the install.sh at line 16 to:
+```
+python -c 'import julia; julia.install(julia=$PATH_TO_JULIA_BINARY)'
+```
 
 ## Usage
 After installation, you should be able to use the package as following
