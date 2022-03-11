@@ -26,8 +26,10 @@ $ python
 >>> from pyPhaseLabel import evaluate_obj, optimize_phases, create_phases
 >>>
 ```
+### Generate input files
+The algorithm take a candidate phase and try to optimize it to fit a pattern by modifying its lattice parameters without changing the symmetry. The `cif_to_input_file.py` takes a list of cif file paths and generate a `sticks.csv` input file that contains the necessary information for the optimization. The `create_phases` function can take this input file and generate an array of `CrystalPhase` object.
  
-These are also the main functions that you would be interfacing with.
+Next, these are also the main functions that you would be interfacing with.
 ### Custom objects
 - `CrystalPhase` contains the lattice information and a list of peak indices and intensities that is required to simulate the x-ray diffraction pattern. The optimization will optimize the lattice parameters under the assumption that no symmetry is broken.
 - `BackgroundModel` uses the q value and a kernel function (see allowed list in [CovariaceFunctions.jl](https://github.com/SebastianAment/CovarianceFunctions.jl)) to simulate the background. EQ (exponential quadratic) is usually a good starting point.

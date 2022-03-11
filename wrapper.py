@@ -15,7 +15,7 @@ from pathlib import Path
 Main.include(str(dir_path / "python_mod.jl"))
 Main.include(str(dir_path / "startup.jl"))
 
-from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate, optimize
+from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate, optimize, PseudoVoigt
 
 DEFAULT_TOL = 1E-5
 METHOD_LST  = ["LM", "Newton"]
@@ -74,6 +74,8 @@ def optimize_phase(phasemodels, x, y,
                 regularization: boolean, whether regularize it  
                 verbose: boolean, whether to print debug information 
                 tol: float = DEFAULT_TOL)
+
+    return: PhaseModel object (optimized)
     """
     assert method in METHOD_LST 
     assert objective in OBJ_LST

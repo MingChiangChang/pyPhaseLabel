@@ -2,16 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from pyPhaseLabel import PhaseModel, CrystalPhase, EQ, BackgroundModel
-from pyPhaseLabel import create_phases, evaluate_obj, optimize_phase, Lorentz 
+from pyPhaseLabel import create_phases, evaluate_obj, optimize_phase, Lorentz, PseudoVoigt 
 
 with open('sticks.csv', 'r') as f:
     t = f.read()
 
-phases = create_phases(t, 0.1, Lorentz())
+phases = create_phases(t, 0.1, PseudoVoigt(0.5))
 
 x = np.linspace(6, 55, 1024)
 y = np.zeros(1024)
-new_phase = CrystalPhase(phases[1], [4.5, 1.0, 0.15])
+new_phase = CrystalPhase(phases[1], [4.5, 1.0, 0.15, 0.4])
 t = evaluate_obj(phases[1], x) 
 
 
