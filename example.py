@@ -8,18 +8,20 @@ with open('sticks.csv', 'r') as f:
     t = f.read()
 
 phases = create_phases(t, 0.1, PseudoVoigt(0.5))
+for idx, phase in enumerate(phases):
+    print(idx, phase.name)
 
 x = np.linspace(6, 55, 1024)
 y = np.zeros(1024)
-new_phase = CrystalPhase(phases[1], [4.5, 1.0, 0.15, 0.4])
-t = evaluate_obj(phases[1], x) 
+new_phase = CrystalPhase(phases[2], [4.5, 1.0, 0.15, 0.4])
+t = evaluate_obj(phases[2], x) 
 
 
 test_data = (evaluate_obj(new_phase, x) 
              + 0.2*np.sin(x/10) 
              + 0.1*np.random.randn(1024)+0.2)
 bg = BackgroundModel(x, EQ(), 5)
-p = PhaseModel(phases[1], bg)
+p = PhaseModel(phases[2], bg)
 pm = optimize_phase(p, x, test_data, maxiter=512)
 plt.plot(x, t, label="Original Phase")
 plt.plot(x, test_data, label="Test data")

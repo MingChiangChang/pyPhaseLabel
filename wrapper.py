@@ -27,7 +27,7 @@ def create_phases(input_str: str, width_init: float, profile):
     the profile should be a Profile object(Lorentz, PseudoVoight...)
     """
     input_list = input_str.split('#\n')
-    return [CrystalPhase(input, width_init, profile) for input in input_list[1:-1]]
+    return [CrystalPhase(input, width_init, profile) for input in input_list[:-1]]
 
 def evaluate_phases(phase, x):
     y = np.zeros(x.shape)
