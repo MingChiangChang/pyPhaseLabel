@@ -82,3 +82,22 @@ def optimize_phase(phasemodels, x, y,
               method=method, objective=objective, maxiter=maxiter, 
               regularization=regularization,
               verbose=verbose, tol=tol) 
+
+def fit_amorphous(wildcard, background, x, y,
+                  std_noise: float = .01,
+                  objective: str = "LS",
+                  method: str = "LM",
+                  maxiter: int = 32,
+                  regularization: bool = True,
+                  verbose: bool = False,
+                  tol: float = DEFAULT_TOL):
+    '''
+    This function assumes that amorphous are formed by wildcard phase that has few wide week peaks and
+    a smooth background.
+
+
+    '''
+    pm = PhaseModel(wildcard, background)
+    opt_pm = optimize_phase(pm, x, y, std_noise, [1., 1., 1.], [1., 1., 1.], objective,
+                            method, maxiter, regularization, verbose, tol)
+    return opt_pm 
