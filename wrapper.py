@@ -6,8 +6,7 @@ from julia import Julia
 _os = platform.system()
 dir_path = Path( __file__ ).parent
 
-if _os == "Linux" or _os == "Windows":
-    Julia(sysimage=str(dir_path / "sys.so"))
+Julia(sysimage=str(dir_path / "sys.so"))
 
 from julia import Main 
 from pathlib import Path
