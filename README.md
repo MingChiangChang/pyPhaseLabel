@@ -34,15 +34,17 @@ The algorithm take a candidate phase and try to optimize it to fit a pattern by 
 Next, these are also the main functions that you would be interfacing with.
 ### Custom objects
 - `CrystalPhase` contains the lattice information and a list of peak indices and intensities that is required to simulate the x-ray diffraction pattern. The optimization will optimize the lattice parameters under the assumption that no symmetry is broken.
-- `BackgroundModel` uses the q value and a kernel function (see allowed list in [CovariaceFunctions.jl](https://github.com/SebastianAment/CovarianceFunctions.jl)) to simulate the background. EQ (exponential quadratic) is usually a good starting point.
-- `PhaseModel` wraps an array of `CrystalPhase` and a optional `BackgroundModel` into a object that can be optimized together to fit the given spectrum.
+- `BackgroundModel` uses the q value and a kernel function (see allowed list in [CovariaceFunctions.jl](https://github.com/SebastianAment/CovarianceFunctions.jl)) to simulate the background. EQ (exponential quadratic) is usually a good starting point. The `rank_tol` is the threshold value for the eigenvalue decomposition for approximating the kernal. The higher it is, the model is computationally cheaper.
+- `Wildcard` contains location specified peaks (instead of specifying hkl) and will be optimized similarly. This object is self-regularized (same as background model), so you have to specify the std_θ that controls the regularized "norm".
+- `PhaseModel` wraps an optional array of `CrystalPhase`, optional array of `Wildcard`, and a optional `BackgroundModel` into a object that can be optimized together to fit the given spectrum.
 - `LazyTree` takes a list of `CrystalPhase` object, the number of allowed coexisting phases, the q vector, background length scale, a list of the input string of a phase and a boolean indicating whether to incoporate background in the optimization, and create a lazily-expand tree object that only expand upon request.
 
 ### Functions
 - `create_phases` create `CrystalPhase` objects from a given input file.
 - `evaluate_obj` evaluates custom objects and return the reconstructed x-ray pattern.
 - `optimize_phases` takes a `PhaseModel` object, q vector, the given pattern and other parameters (see code comments) as input. It optimize the lattice parameters and the background to get an optimal result with the given error metric.
-- `search` take a `LazyTree` and the same set of input parameter as `optimize_phases` and do a tree search to search for the best phase. The return is a list of list which contains the optimized node at each level. Complexity is O(kn) where n is the number of potential phases and k is the number of the best node you search at each level.
+- `fit_amorphous` formulates the way to fit amorphous background, which is to include a `Wildcard` object and a smooth `BackgroundModel` into a `PhaseModel` object and optimize it.
+- `search` take a `LazyTree` and the same set of input parameter as `optimize_phases` and do a tree search to search for the best phase. The return is a list of list which contains the optimized node at each level. Complexity is O(kn) where n is the number of potential phases and k is the number of the best node you search at each level. (see `test.py`)
 - `search_k2n` is another search method for searching the lazytree. It's a more thorough search but its complexity is O(k<sup>2</sup>n)
 
 
@@ -52,3 +54,5 @@ This is the output of the `example.py`
 ![Example](example.png)
 
 As you can see from the figure, this code can fit the lattice distortion while fitting the background at once.
+
+For usage of `Wildcard` and `fit_amorphous`, please refer to the `amorphous.py` script.
