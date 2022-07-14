@@ -15,7 +15,7 @@ w  = Wildcard([10., 19.], [1., 1.], [2., 1.], "amorphous", Lorentz(),  [1., 1., 
 bg = BackgroundModel(q, EQ(), 15, rank_tol=1E-3)
 
 start = time.time()
-opt_pm = fit_amorphous(w, bg, q, y, maxiter=256)
+opt_pm = fit_amorphous(None, bg, q, y, maxiter=256)
 print(time.time() - start)
 plt.plot(q, y)
 plt.plot(q, evaluate_obj(opt_pm, q))

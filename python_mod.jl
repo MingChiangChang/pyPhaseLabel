@@ -22,6 +22,32 @@ function optimize(phases::AbstractVector{CrystalPhase}, x::AbstractVector, y::Ab
     return pm.CPs
 end
 
+function full_optimize(phases, x::AbstractVector, y::AbstractVector,
+                   std_noise::Real, mean_θ::AbstractVector = [1., 1., .2],
+                   std_θ::AbstractVector = [1., Inf, 5.];
+                   method::String="LM", objective::String = "LS",
+                   regularization::Bool = true,
+                   loop_num::Int=8,
+                   peak_shift_iter::Int = 32,
+                   mod_peak_num::Int = 32,
+                   peak_mod_mean::AbstractVector = [1.],
+                   peak_mod_std::AbstractVector = [.5],
+                   peak_mod_iter::Int=32,
+                   verbose::Bool = false, tol::Float64 =DEFAULT_TOL)
+    method_enum = get_method_enum(method)
+    pm = full_optimize!(phases, x, y, std_noise, mean_θ, std_θ, method=method_enum,
+                objective=objective, regularization=regularization,
+		loop_num = loop_num,
+                peak_shift_iter = peak_shift_iter,
+                mod_peak_num = mod_peak_num,
+                peak_mod_mean = peak_mod_mean,
+                peak_mod_std = peak_mod_std,
+                peak_mod_iter = peak_mod_iter,
+                verbose=verbose, tol=tol)
+    return pm
+end
+
+
 function get_method_enum(method_str::String)
     if method_str == "LM"
 	    return LM
@@ -76,4 +102,3 @@ function search_k2n(LT::Lazytree, x::AbstractVector, y::AbstractVector, k::Int,
                 maxiter = 32, regularization::Bool = true, tol::Real = DEFAULT_TO)
     search_k2n!(LT, x, y, k, std_noise, mean, std, maxiter=maxiter, regularization=regularization, tol=tol)
 end
-

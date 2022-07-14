@@ -14,7 +14,7 @@ from pathlib import Path
 Main.include(str(dir_path / "python_mod.jl"))
 Main.include(str(dir_path / "startup.jl"))
 
-from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate, optimize, PseudoVoigt
+from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate, optimize, PseudoVoigt, full_optimize
 
 DEFAULT_TOL = 1E-5
 METHOD_LST  = ["LM", "Newton"]
@@ -101,3 +101,28 @@ def fit_amorphous(wildcard, background, x, y,
     opt_pm = optimize_phase(pm, x, y, std_noise, [1., 1., 1.], [1., 1., 1.], objective,
                             method, maxiter, regularization, verbose, tol)
     return opt_pm 
+
+
+def optimize_all(phases, x, y, std_noise, mean_θ, std_θ,
+                 objective: str = "LS",
+                 method: str = "LM",
+                 regularization: bool = True,
+                 loop_num: int=8,
+                 peak_shift_iter: int = 32,
+                 mod_peak_num: int = 32,
+                 peak_mod_mean = [1.],
+                 peak_mod_std = [.5],
+                 peak_mod_iter:int =32,
+                 verbose: bool = False,
+                 tol: float = DEFAULT_TOL):
+    assert method in METHOD_LST
+    assert objective in OBJ_LST
+    return full_optimize(phases, x, y, std_noise, mean_θ, std_θ,
+              method=method, objective=objective,
+              regularization=regularization,
+              loop_num=loop_num,
+              mod_peak_num = mod_peak_num,
+              peak_mod_mean = peak_mod_mean,
+              peak_mod_std = peak_mod_std,
+              peak_mod_iter = peak_mod_iter,
+              verbose=verbose, tol=tol)

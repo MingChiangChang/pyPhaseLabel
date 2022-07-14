@@ -25,9 +25,10 @@ plt.show()
 
 result = search(tree, x, y, 3, std_noise, mean_θ, std_θ, maxiter=128, regularization=True)
 
-for node in result:
+for idx, node in enumerate(result):
     a = [np.linalg.norm(evaluate_obj(n.phase_model, x)-y) for n in node]
     ind = np.argmin(a)
     plt.plot(x, evaluate_obj(node[ind].phase_model, x))
     plt.plot(x, y)
+    plt.title(f"{idx} phase")
     plt.show()
