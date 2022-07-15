@@ -1,6 +1,6 @@
 using CrystalShift
 using CrystalShift: CrystalPhase, PhaseModel, optimize!, evaluate!, evaluate_residual!
-using CrystalShift: OptimizationMethods
+using CrystalShift: OptimizationMethods, optimize_with_uncertainty!
 using CrystalTree
 using CrystalTree: Lazytree, search!, search_k2n!
 import CrystalShift: evaluate
@@ -20,6 +20,26 @@ function optimize(phases::AbstractVector{CrystalPhase}, x::AbstractVector, y::Ab
                 objective=objective, maxiter=maxiter, regularization=regularization,
                 verbose=verbose, tol=tol)
     return pm.CPs
+end
+
+function optimize_with_uncertainty(phases::Any,
+		   x::AbstractVector, y::AbstractVector,
+                   std_noise::Real, mean_θ::AbstractVector = [1., 1., .2],
+                   std_θ::AbstractVector = [1., Inf, 5.];
+                   method::String="LM", objective::String = "LS",
+                   maxiter::Int = 32,
+                   regularization::Bool = true,
+                   verbose::Bool = false, tol::Float64 =DEFAULT_TOL)
+    method_enum = get_method_enum(method)
+    pm, uncer = optimize_with_uncertainty!(phases, x, y,
+				    std_noise, mean_θ, std_θ,
+				    method=method_enum,
+                                    objective=objective,
+				    maxiter=maxiter,
+				    regularization=regularization,
+                                    verbose=verbose,
+				    tol=tol)
+    return pm, uncer
 end
 
 function full_optimize(phases, x::AbstractVector, y::AbstractVector,

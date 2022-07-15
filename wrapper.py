@@ -14,7 +14,9 @@ from pathlib import Path
 Main.include(str(dir_path / "python_mod.jl"))
 Main.include(str(dir_path / "startup.jl"))
 
-from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate, optimize, PseudoVoigt, full_optimize
+from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate
+from julia.Main import optimize, PseudoVoigt, full_optimize
+from julia.Main import optimize_with_uncertainty
 
 DEFAULT_TOL = 1E-5
 METHOD_LST  = ["LM", "Newton"]
@@ -61,6 +63,7 @@ def optimize_phase(phasemodels, x, y,
                 method: str = "LM",
                 maxiter: int = 32,
                 regularization: bool = True,
+                gives_uncertatinty: bool = False,
                 verbose: bool = False, tol: float = DEFAULT_TOL):
     """
     optimize_phase(phasemodels, x, y,
@@ -78,10 +81,17 @@ def optimize_phase(phasemodels, x, y,
     """
     assert method in METHOD_LST 
     assert objective in OBJ_LST
-    return optimize(phasemodels, x, y, std_noise, mean_θ, std_θ,
-              method=method, objective=objective, maxiter=maxiter, 
-              regularization=regularization,
-              verbose=verbose, tol=tol) 
+    if gives_uncertatinty:
+        return optimize_with_uncertainty(phasemodels, x, y,
+                std_noise, mean_θ, std_θ,
+                method=method, objective=objective, maxiter=maxiter,
+                regularization=regularization,
+                verbose=verbose, tol=tol)
+    else:
+        return optimize(phasemodels, x, y, std_noise, mean_θ, std_θ,
+                method=method, objective=objective, maxiter=maxiter, 
+                regularization=regularization,
+                verbose=verbose, tol=tol) 
 
 def fit_amorphous(wildcard, background, x, y,
                   std_noise: float = .01,
