@@ -109,7 +109,8 @@ def fit_amorphous(wildcard, background, x, y,
     '''
     pm = PhaseModel(wildcard, background)
     opt_pm = optimize_phase(pm, x, y, std_noise, [1., 1., 1.], [1., 1., 1.], objective,
-                            method, maxiter, regularization, verbose, tol)
+                            method=method, maxiter=maxiter, regularization=regularization,
+                            verbose=verbose, tol=tol)
     return opt_pm 
 
 
