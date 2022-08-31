@@ -33,12 +33,13 @@ The algorithm take a candidate phase and try to optimize it to fit a pattern by 
  
 Next, these are also the main functions that you would be interfacing with.
 ### Custom objects
-- `CrystalPhase` contains the lattice information and a list of peak indices and intensities that is required to simulate the x-ray diffraction pattern. The optimization will optimize the lattice parameters under the assumption that no symmetry is broken.
-- `BackgroundModel` uses the q value and a kernel function (see allowed list in [CovariaceFunctions.jl](https://github.com/SebastianAment/CovarianceFunctions.jl)) to simulate the background. EQ (exponential quadratic) is usually a good starting point. The `rank_tol` is the threshold value for the eigenvalue decomposition for approximating the kernal. The higher it is, the model is computationally cheaper.
-- `FixedBackground` models a constant basis background that can scale multiplicative and a constant factor. The constructor is `FixedBackground(basis, a, c, λ)`. This background is evaluated as `B.a * B.basis + B.c`.
-- `Wildcard` contains location specified peaks (instead of specifying hkl) and will be optimized similarly. This object is self-regularized (same as background model), so you have to specify the std_θ that controls the regularized "norm".
-- `PhaseModel` wraps an optional array of `CrystalPhase`, optional array of `Wildcard`, and a optional `BackgroundModel` into a object that can be optimized together to fit the given spectrum.
-- `LazyTree` takes a list of `CrystalPhase` object, the number of allowed coexisting phases, the q vector, background length scale, a list of the input string of a phase and a boolean indicating whether to incoporate background in the optimization, and create a lazily-expand tree object that only expand upon request.
+- `CrystalPhase{cl, origin_cl, peaks, id, name, act, σ, profile, norm_constant}` contains the lattice information and a list of peak indices and intensities that is required to simulate the x-ray diffraction pattern. The optimization will optimize the lattice parameters under the assumption that no symmetry is broken.
+- `BackgroundModel{k, K, U, S, λ, c}` uses the q value and a kernel function (see allowed list in [CovariaceFunctions.jl](https://github.com/SebastianAment/CovarianceFunctions.jl)) to simulate the background. EQ (exponential quadratic) is usually a good starting point. The `rank_tol` is the threshold value for the eigenvalue decomposition for approximating the kernal. The higher it is, the model is computationally cheaper.
+- `FixedBackground{basis, a, λ}` models a constant basis background that can scale multiplicative and a constant factor. The constructor is `FixedBackground(basis, a, λ)`. This background is evaluated as `B.a * B.basis`.
+- `Wildcard{peak_locs, activations, σ, name, profile, mean_θ, std_θ}` contains location specified peaks (instead of specifying hkl) and will be optimized similarly. This object is self-regularized (same as background model), so you have to specify the std_θ that controls the regularized "norm".
+- `PhaseModel{CPs, wildcard, background}` wraps an optional array of `CrystalPhase`, optional array of `Wildcard`, and a optional `BackgroundModel` into a object that can be optimized together to fit the given spectrum.
+- `LazyTree{nodes, phase_combinations, phases, depth, x, l, _str}` takes a list of `CrystalPhase` object, the number of allowed coexisting phases, the q vector, background length scale, a list of the input string of a phase and a boolean indicating whether to incoporate background in the optimization, and create a lazily-expand tree object that only expand upon request.
+
 
 ### Functions
 - `create_phases` create `CrystalPhase` objects from a given input file.
