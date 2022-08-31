@@ -48,6 +48,7 @@ Next, these are also the main functions that you would be interfacing with.
 - `fit_amorphous` formulates the way to fit amorphous background, which is to include a `Wildcard` object and a smooth `BackgroundModel` into a `PhaseModel` object and optimize it.
 - `search` take a `LazyTree` and the same set of input parameter as `optimize_phases` and do a tree search to search for the best phase. The return is a list of list which contains the optimized node at each level. Complexity is O(kn) where n is the number of potential phases and k is the number of the best node you search at each level. (see `test.py`)
 - `search_k2n` is another search method for searching the lazytree. It's a more thorough search but its complexity is O(k<sup>2</sup>n)
+- `get_probabilities(reuslt_nodes, x, y, std_noise, mean_θ, std_θ)` returns the probabilities of each of the search result (which has to be flattened into a 1d list) using the x, y and the priors as inputs.
 
 
 ## Example
