@@ -34,3 +34,5 @@ plt.xlabel("q ($nm^{-1}$)")
 plt.ylabel("(a.u.)")
 plt.show()
 
+from julia.Main import get_fraction
+print(get_fraction(phases[1:3]))
