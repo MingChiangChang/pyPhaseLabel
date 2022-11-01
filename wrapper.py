@@ -16,7 +16,7 @@ Main.include(str(dir_path / "startup.jl"))
 
 from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate
 from julia.Main import optimize, PseudoVoigt, full_optimize
-from julia.Main import optimize_with_uncertainty
+from julia.Main import optimize_with_uncertainty, get_fraction
 
 DEFAULT_TOL = 1E-5
 METHOD_LST  = ["LM", "Newton"]
