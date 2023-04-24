@@ -25,28 +25,28 @@ function optimize(phases::AbstractVector{CrystalPhase}, x::AbstractVector, y::Ab
     return pm.CPs
 end
 
-function optimize_with_uncertainty(phases::Any,
-		   x::AbstractVector, y::AbstractVector,
-                   std_noise::Real, mean_θ::AbstractVector = [1., 1., .2],
-                   std_θ::AbstractVector = [1., Inf, 5.];
-                   method::String="LM", objective::String = "LS",
-		   optimize_mode::String="Simple",
-                   maxiter::Int = 32,
-                   regularization::Bool = true,
-                   verbose::Bool = false, tol::Float64 =DEFAULT_TOL)
-    method_enum = get_method_enum(method)
-    optimize_mode_enum = get_optimize_mode_enum(optimize_mode)
-    pm, uncer = optimize_with_uncertainty!(phases, x, y,
-				    std_noise, mean_θ, std_θ,
-				    method=method_enum,
-                                    objective=objective,
-				    optimize_mode=optimize_mode_num,
-				    maxiter=maxiter,
-				    regularization=regularization,
-                                    verbose=verbose,
-				    tol=tol)
-    return pm, uncer
-end
+#function optimize_with_uncertainty(phases::Any,
+#		   x::AbstractVector, y::AbstractVector,
+#                   std_noise::Real, mean_θ::AbstractVector = [1., 1., .2],
+#                   std_θ::AbstractVector = [1., Inf, 5.];
+#                   method::String="LM", objective::String = "LS",
+#		   optimize_mode::String="Simple",
+#                   maxiter::Int = 32,
+#                   regularization::Bool = true,
+#                   verbose::Bool = false, tol::Float64 =DEFAULT_TOL)
+#    method_enum = get_method_enum(method)
+#    optimize_mode_enum = get_optimize_mode_enum(optimize_mode)
+#    pm, uncer = optimize_with_uncertainty!(phases, x, y,
+#				    std_noise, mean_θ, std_θ,
+#				    method=method_enum,
+#                                    objective=objective,
+#				    optimize_mode=optimize_mode_enum,
+#				    maxiter=maxiter,
+#				    regularization=regularization,
+#                                    verbose=verbose,
+#				    tol=tol)
+#    return pm, uncer
+#end
 
 function full_optimize(phases, x::AbstractVector, y::AbstractVector,
                    std_noise::Real, mean_θ::AbstractVector = [1., 1., .2],
@@ -108,7 +108,7 @@ function optimize(pm::PhaseModel, x::AbstractVector, y::AbstractVector,
     optimize_mode_enum = get_optimize_mode_enum(optimize_mode)
     return optimize!(pm, x, y, std_noise, mean_θ, std_θ,
                 method=method_enum, objective=objective,
-		optimize_mode=optimize_mode_num,
+		optimize_mode=optimize_mode_enum,
 		maxiter=maxiter,
                 regularization=regularization, verbose=verbose,
                 tol=tol)

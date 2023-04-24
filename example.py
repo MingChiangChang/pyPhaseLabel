@@ -22,7 +22,7 @@ test_data = (evaluate_obj(new_phase, x)
              + 0.1*np.random.randn(1024)+0.2)
 bg = BackgroundModel(x, EQ(), 20, 100)
 p = PhaseModel(phases[2], bg)
-pm, uncer = optimize_phase(p, x, test_data, maxiter=512, gives_uncertatinty=True,
+pm, uncer = optimize_phase(p, x, test_data, maxiter=512, optimize_mode="WithUncer",
         verbose=True)
 print(f"uncer: {uncer}")
 plt.plot(x, t, label="Original Phase")

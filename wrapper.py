@@ -16,7 +16,7 @@ Main.include(str(dir_path / "startup.jl"))
 
 from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate
 from julia.Main import optimize, PseudoVoigt, full_optimize
-from julia.Main import optimize_with_uncertainty, get_fraction
+from julia.Main import get_fraction
 
 DEFAULT_TOL = 1E-5
 METHOD_LST  = ["LM", "Newton"]
@@ -61,9 +61,9 @@ def optimize_phase(phasemodels, x, y,
                 std_θ = [1., .5, 5.],
                 objective: str = "LS",
                 method: str = "LM",
+                optimize_mode: str = "Simple",   
                 maxiter: int = 32,
                 regularization: bool = True,
-                gives_uncertatinty: bool = False,
                 verbose: bool = False, tol: float = DEFAULT_TOL):
     """
     optimize_phase(phasemodels, x, y,
@@ -72,6 +72,9 @@ def optimize_phase(phasemodels, x, y,
                 std_θ:  Array of length three, represents the expected std of [lattice shift, activation, peak_width]
                 objective: fitting objective, can be either "LS" (least square) or "KL" (KL-divergence)
                 method: fitting method, can be either "LM" (Levenberg method) or "Newton" (Saddle-free Newton) 
+                optimize_mode: Simple does normal refinement,
+                               EM uses expectation maximization to estimate std_noise,
+                               WithUncer gives uncertainty estimates
                 maxiter: maximum number of iteration for optimization 
                 regularization: boolean, whether regularize it  
                 verbose: boolean, whether to print debug information 
@@ -81,15 +84,9 @@ def optimize_phase(phasemodels, x, y,
     """
     assert method in METHOD_LST 
     assert objective in OBJ_LST
-    if gives_uncertatinty:
-        return optimize_with_uncertainty(phasemodels, x, y,
-                std_noise, mean_θ, std_θ,
-                method=method, objective=objective, maxiter=maxiter,
-                regularization=regularization,
-                verbose=verbose, tol=tol)
-    else:
-        return optimize(phasemodels, x, y, std_noise, mean_θ, std_θ,
-                method=method, objective=objective, maxiter=maxiter, 
+    return optimize(phasemodels, x, y, std_noise, mean_θ, std_θ,
+                method=method, objective=objective, optimize_mode=optimize_mode,
+                maxiter=maxiter, 
                 regularization=regularization,
                 verbose=verbose, tol=tol) 
 
@@ -117,6 +114,7 @@ def fit_amorphous(wildcard, background, x, y,
 def optimize_all(phases, x, y, std_noise, mean_θ, std_θ,
                  objective: str = "LS",
                  method: str = "LM",
+                 optimize_mode: str = "Simple",
                  regularization: bool = True,
                  loop_num: int=8,
                  peak_shift_iter: int = 32,
@@ -131,6 +129,7 @@ def optimize_all(phases, x, y, std_noise, mean_θ, std_θ,
     return full_optimize(phases, x, y, std_noise, mean_θ, std_θ,
               method=method, objective=objective,
               regularization=regularization,
+              optimize_mode=optimize_mode,
               loop_num=loop_num,
               mod_peak_num = mod_peak_num,
               peak_mod_mean = peak_mod_mean,
