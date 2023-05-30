@@ -1,6 +1,10 @@
+import os
+from pathlib import Path
+
 import julia
 from julia import Julia
-Julia(sysimage="sys.so")
+sys_path = Path(os.environ["JULIA_SYS_IMG_PATH"]) / "sys.so"
+Julia(sysimage=str(sys_path))
 
 from julia import Pkg
 
