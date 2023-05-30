@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,7 +11,7 @@ std_noise = .01
 mean_θ = [1., 1., .2]
 std_θ = [.5, .5, 1.]
 
-with open('../sticks.csv', 'r') as f:
+with open(Path(__file__).parnet / 'sticks.csv', 'r') as f:
     t = f.read()
 tt = t.split("#\n")
 tt.remove("")

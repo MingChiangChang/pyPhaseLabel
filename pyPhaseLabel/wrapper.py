@@ -1,18 +1,20 @@
+import os
 import platform
 from pathlib import Path
 import numpy as np
 from julia import Julia
 
 _os = platform.system()
-dir_path = Path( __file__ ).parent
+package_path = Path(__file__).parent
+dir_path = Path(os.environ["JULIA_SYS_IMG_PATH"])
 
 Julia(sysimage=str(dir_path / "sys.so"))
 
 from julia import Main 
 from pathlib import Path
 
-Main.include(str(dir_path / "python_mod.jl"))
-Main.include(str(dir_path / "startup.jl"))
+Main.include(str(package_path / "python_mod.jl"))
+Main.include(str(package_path / "startup.jl"))
 
 from julia.Main import CrystalPhase, Lorentz, PhaseModel, evaluate
 from julia.Main import optimize, PseudoVoigt, full_optimize

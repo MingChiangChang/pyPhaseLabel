@@ -1,10 +1,11 @@
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 
 from pyPhaseLabel import PhaseModel, CrystalPhase, EQ, BackgroundModel
 from pyPhaseLabel import create_phases, evaluate_obj, optimize_phase, Lorentz, PseudoVoigt 
 
-with open('sticks.csv', 'r') as f:
+with open(Path(__file__).parent / 'sticks.csv', 'r') as f:
     t = f.read()
 
 phases = create_phases(t, 0.1, PseudoVoigt(0.5))
