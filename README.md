@@ -22,7 +22,7 @@ python
 >> import julia
 >> julia.install()
 ```
-This can give error when the julia is not installed at default location. In such case, edit the install.sh at line 16 to:
+This can give error when the julia is not installed at default location. In such case, change it to
 ```console
 >> julia.install(julia=path/to/julia/binary)
 ```
