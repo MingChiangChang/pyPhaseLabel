@@ -35,7 +35,12 @@ Then add the `sys.so` path to environment variables by adding this line to your 
 export JULIA_SYS_IMG_PATH=path/to/julia/system/image
 ```
 For windows, set `JULIA_SYS_IMG_PATH` to `path/to/julia/system/image` in control panel.
-6. Finally, run `install.py` to install required julia packages.
+
+6. Finally, run 
+```console
+python install.py
+```
+to install required julia packages.
 
 ## Usage
 After installation, you should be able to use the package as following
